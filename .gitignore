@@ -1,1 +1,25 @@
-tmp/
+# .gitignore
+
+# Binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Build artifacts
+bin/
+build/
+
+# Vendor (optional)
+vendor/
+
+# IDE/editor files
+.vscode/
+.idea/
+*.swp
+
+# Air temp files (if using Air)
+.tmp/

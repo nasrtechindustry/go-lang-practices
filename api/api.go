@@ -2,8 +2,13 @@ package api
 
 import (
 	"encoding/json"
+	"fmt"
+	"log"
 	"net/http"
+	"strconv"
 )
+
+const PORT int = 9090
 
 type User struct {
 	Name    string   `json:"username"`
@@ -13,9 +18,10 @@ type User struct {
 
 func API() {
 
-	http.HandleFunc("/", welcome)
+	http.HandleFunc("/user", welcome)
+	fmt.Printf("The server is listening on port %v via http://localhost:%v"  , PORT  ,PORT)
 
-	http.ListenAndServe(":8000", nil)
+	log.Fatal(http.ListenAndServe(":"+strconv.Itoa(PORT), nil))
 
 }
 
@@ -28,5 +34,6 @@ func welcome(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
+
 	json.NewEncoder(w).Encode(user)
 }
