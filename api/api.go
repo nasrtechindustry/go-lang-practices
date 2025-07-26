@@ -2,38 +2,34 @@ package api
 
 import (
 	"encoding/json"
-	"fmt"
-	"log"
 	"net/http"
-	"strconv"
+
+	"github.com/go-chi/chi/v5"
 )
 
-const PORT int = 9090
-
-type User struct {
-	Name    string   `json:"username"`
-	Age     string   `json:"age"`
-	Hobbies []string `json:"hobbies"`
+type Book struct {
+	Name      string
+	Publisher string
+	Year      int
+	Authors   []string
 }
 
-func API() {
+type books []Book
 
-	http.HandleFunc("/user", welcome)
-	fmt.Printf("The server is listening on port %v via http://localhost:%v"  , PORT  ,PORT)
+func Init() {
+	r := chi.NewRouter()
 
-	log.Fatal(http.ListenAndServe(":"+strconv.Itoa(PORT), nil))
 
-}
+	books := books{Book{Name: "End of Vibe coding", Authors: []string{"juma", "nyambari"}},
+		Book{Name: "Imperative programming", Authors: []string{"bro code", "Rizy codes"}}}
 
-func welcome(w http.ResponseWriter, r *http.Request) {
+	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("root api call"))
+	})
 
-	user := User{
-		Name:    "Juma",
-		Age:     "kaka",
-		Hobbies: []string{"dancing", "cooking"},
-	}
+	r.Get("/books", func(w http.ResponseWriter, r *http.Request) {
+		json.NewEncoder(w).Encode(books)
+	})
 
-	w.Header().Set("Content-Type", "application/json")
-
-	json.NewEncoder(w).Encode(user)
+	http.ListenAndServe(":3000", r)
 }

@@ -5,5 +5,6 @@ import "mygo/api"
 
 func main() {
 
-	api.API()
+	api.Init()
+
 }
